@@ -13,6 +13,27 @@ A practical reference covering day-to-day Git usage, config templates, and bulk 
 
 ---
 
+## My recently learned git commands
+
+```bash
+# Keep the file, but revert it back to the original version
+git restore <file-name>
+git checkout -- path/to/file.ext
+git checkout origin/main -- path/to/file.ext # from other branch
+git restore . # discard all unstaged changes
+
+
+# Keep the file locally, but remove it from Git tracking
+git rm --cached path/to/file.ext
+
+# Delete the file completely from the codebase
+git rm path/to/file.ext
+
+# Save Them for Later
+# Stashes both modified tracked files and untracked files
+git stash -u 
+```
+
 ## Setup & Configuration
 
 ### Linux / WSL `.gitconfig` 🏠 Personal config
