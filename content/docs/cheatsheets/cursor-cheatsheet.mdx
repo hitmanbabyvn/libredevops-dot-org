@@ -1,0 +1,38 @@
+---
+title: Cursor Cheatsheet
+description: Cursor handy notes
+---
+
+# Cursor Cheatsheet
+
+Cursor handy notes
+
+---
+
+## My recently learned prompt
+
+### Comment out old code instead of deleting it
+To make the Cursor AI agent comment out old code instead of deleting it, you must explicitly instruct the agent inside your prompt or via persistent rules. By default, LLMs tend to strip out unused or old blocks of code to keep things clean
+
+How to Prompt the Agent
+
+> Refactor the processData function. Do not delete the old implementation; comment it out completely using standard language comments, and write the new implementation right below it."
+
+Add a Rule to Cursor Rules (.cursorrules)
+
+1. Open your project settings or go to Cursor Settings > Rules for AI (or open your .cursorrules / AGENTS.md file in the root of your project)
+
+2. Add a rule like this:
+
+> Never delete old code blocks when replacing logic. Instead, comment out the old code block with a clear label (e.g., // OLD: ...), and place the new code directly below it.
+
+  ```text
+Never delete old code blocks when replacing logic. Instead, comment out the old code block with a clear label (e.g., // OLD: ...), and place the new code directly below it.
+```
+
+
+---
+
+## Anti-patterns
+
+- 🚨 / ⚠️ 
