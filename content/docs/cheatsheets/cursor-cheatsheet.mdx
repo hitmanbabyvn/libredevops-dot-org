@@ -6,8 +6,192 @@ description: Cursor handy notes
 # Cursor Cheatsheet
 
 Cursor handy notes
+  - [Cursor Customize](#cursor-customize)
+     - [Plugins](#plugins)
+     - [Rules](#rules)
+     - [Skills](#skills)
+  - [My recently learned prompt](#my-recently-learned-prompt)
+    - [Comment out old code instead of deleting it](#comment-out-old-code-instead-of-deleting-it)
+  - [Anti-patterns](#anti-patterns)
 
 ---
+
+## Cursor Customize
+
+Notes from https://cursor.com/docs/customize-cursor
+
+| Component | Description |
+| -------- | -------- | -------- |
+| Plugins | Distributable bundles that package rules, skills, subagents, commands, MCP servers, and hooks. Install from the marketplace or a team marketplace. |
+| Rules | Persistent instructions that shape how Agent works with your code. Use project rules (`.mdc` files) , user rules, team rules, or `AGENTS.md`. |
+| Skills | Specialized capabilities Agent loads when relevant. Skills package domain knowledge, workflows, and scripts in `SKILL.md` files. See Agent Skills. |
+| Subagents | Specialized assistants Agent delegates to for parallel or isolated work. Each subagent runs in its own context window. See Subagents. |
+| Hooks | Scripts that observe, control, or extend the agent loop at specific lifecycle events. See Hooks. |
+| Commands | Reusable prompts you invoke with `/` in Agent chat. Commands are markdown files that define a focused workflow or action. |
+
+### Plugins
+
+Plugins are distributable bundles that package rules, skills, subagents, commands, MCP servers, and hooks. Install from the marketplace or a team marketplace.
+
+Read more about Plugins at https://cursor.com/docs/plugins
+
+### Rules
+
+| Rule | Description |
+| -------- | -------- |
+| Project Rules | Stored in `.cursor/rules` (`.mdc` files), version-controlled and scoped to your codebase. |
+| User Rules | Global to your Cursor environment. Used by Agent (Chat). |
+| Team Rules | Team-wide rules managed from the dashboard. Available on Team and Enterprise plans. |
+| AGENTS.md | Agent instructions in markdown format. Simple alternative to `.cursor/rules`. |
+
+How rules work
+
+- Large language models don't retain memory between completions. Rules provide persistent, reusable context at the prompt level.
+- When applied, rule contents are included at the start of the model context. This gives the AI consistent 
+guidance for generating code, interpreting edits, or helping with workflows.
+
+Project rules: Use project rules to:
+
+  - Encode domain-specific knowledge about your codebase
+  - Automate project-specific workflows or templates
+  - Standardize style or architecture decisions
+
+Rule file structure:
+
+```text
+.cursor/rules/
+  react-patterns.mdc       # Recognized as a project rule
+  api-guidelines.md        # Ignored (wrong extension)
+  frontend/                # Organize rules in folders
+    components.mdc
+```
+
+Rule anatomy: read more about `description`, `globs`, `alwaysApply`, and examples at https://cursor.com/docs/rules#rule-anatomy
+
+Referencing files from a rule:
+
+A file mention like `@migration-template.sql` tells Agent where to look for the file.
+
+Creating a rule:
+
+- In chat: use `/create-rule` to create a new rule at `.cursor/rules`.
+- From Customize: Open Customize in the sidebar -> Rules -> Add Rule to create a new rule at `.cursor/rules`.
+
+Best practices: Good rules are focused, actionable, and scoped.
+- Keep rules under 500 lines
+- Split large rules into multiple, composable rules
+- Provide concrete examples or referenced files
+- Avoid vague guidance. Write rules like clear internal docs
+- Reuse rules when repeating prompts in chat
+- Reference files instead of copying their contents. This keeps rules short and prevents them from becoming stale as code changes. Agent reads a referenced file when it needs it, so tell it what to look for there
+
+What to avoid in rules
+- Copying entire style guides: Use a linter instead. Agent already knows common style conventions.
+- Documenting every possible command: Agent knows common tools like npm, git, and pytest.
+- Adding instructions for edge cases that rarely apply: Keep rules focused on patterns you use frequently.
+- Duplicating what's already in your codebase: Point to canonical examples instead of copying code.
+
+AGENTS.md: An alternative to `.cursor/rules` for simple rules.
+
+Example AGENTS.md:
+
+```text
+# Project Instructions
+
+## Code Style
+
+- Use TypeScript for all new files
+- Prefer functional components in React
+- Use snake_case for database columns
+
+## Architecture
+
+- Follow the repository pattern
+- Keep business logic in service layers
+- Use dependency injection for dependencies
+
+## Testing
+
+- Write unit tests for all new functions
+- Use Jest for testing
+- Use React Testing Library for testing React components
+```
+
+Nested AGENTS.md support
+
+```text
+project/
+  AGENTS.md              # Global instructions
+  frontend/
+    AGENTS.md            # Frontend-specific instructions
+    components/
+      AGENTS.md          # Component-specific instructions
+  backend/
+    AGENTS.md            # Backend-specific instructions
+```
+
+User Rules: User Rules are global preferences defined in Customize → Rules that apply across all projects. They are used by Agent (Chat) and are perfect for setting preferred communication style or coding conventions:
+
+```text
+Please reply in a concise style. Avoid unnecessary repetition or filler language.
+```
+
+### Skills
+
+Agent Skills is an open standard for extending AI agents with specialized capabilities. Skills package domain-specific knowledge and workflows that agents can use to perform specific tasks.
+
+Built-in Cursor skills: more at https://cursor.com/docs/skills#built-in-cursor-skills
+
+Skill directories: Skills are automatically loaded from these locations:
+
+| Location | Scope |
+| -------- | -------- |
+| .agents/skills/ | Project-level |
+| .cursor/skills/ | Project-level |
+| ~/.agents/skills/ | User-level (global) on the local machine |
+| ~/.cursor/skills/ | User-level (global) on the local machine |
+
+For compatibility, Cursor also loads skills from Claude and Codex directories: `.claude/skills/`, `.codex/skills/`, `~/.claude/skills/`, and `~/.codex/skills/`.
+
+Each skill should be a folder containing a SKILL.md file:
+
+```text
+project/
+  .agents/skills/
+    my-skill/
+      SKILL.md           # Skill definition
+```
+
+Skills can also include optional directories for scripts, references, and assets: more at https://cursor.com/docs/skills#skill-directories
+
+Nested skill directories: more at https://cursor.com/docs/skills#nested-skill-directories
+
+SKILL.md file format
+
+```text
+---
+name: my-skill
+description: Short description of what this skill does and when to use it.
+---
+
+# My Skill
+
+Detailed instructions for the agent.
+
+## When to Use
+
+- Use this skill when...
+- This skill is helpful for...
+
+## Instructions
+
+- Step-by-step guidance for the agent
+- Domain-specific conventions
+- Best practices and patterns
+- Use the ask questions tool if you need to clarify requirements with the user
+```
+
+Detail about SKILL.md at https://cursor.com/docs/skills#frontmatter-fields
 
 ## My recently learned prompt
 
