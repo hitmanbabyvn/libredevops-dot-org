@@ -1,4 +1,5 @@
 import { useMDXComponents as getDocsMDXComponents } from 'nextra-theme-docs'
+import { FileTree } from 'nextra/components'
 import { CodeBlock } from '@/components/code-block'
 
 export function useMDXComponents(
@@ -7,6 +8,7 @@ export function useMDXComponents(
     return {
         ...getDocsMDXComponents(),
         pre: CodeBlock as React.ComponentType,
+        FileTree,
         ...components
     }
 }

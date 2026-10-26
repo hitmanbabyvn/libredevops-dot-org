@@ -58,12 +58,12 @@ Project rules: Use project rules to:
 
 Rule file structure:
 
-```text
+```filesystem
 .cursor/rules/
-  react-patterns.mdc       # Recognized as a project rule
-  api-guidelines.md        # Ignored (wrong extension)
-  frontend/                # Organize rules in folders
-    components.mdc
+├── react-patterns.mdc       # Recognized as a project rule
+├── api-guidelines.md        # Ignored (wrong extension)
+└── frontend/                # Organize rules in folders
+  └── components.mdc
 ```
 
 Rule anatomy: read more about `description`, `globs`, `alwaysApply`, and examples at https://cursor.com/docs/rules#rule-anatomy
@@ -95,7 +95,7 @@ AGENTS.md: An alternative to `.cursor/rules` for simple rules.
 
 Example AGENTS.md:
 
-```text
+```markdown
 # Project Instructions
 
 ## Code Style
@@ -119,15 +119,15 @@ Example AGENTS.md:
 
 Nested AGENTS.md support
 
-```text
+```filesystem
 project/
-  AGENTS.md              # Global instructions
-  frontend/
-    AGENTS.md            # Frontend-specific instructions
-    components/
-      AGENTS.md          # Component-specific instructions
-  backend/
-    AGENTS.md            # Backend-specific instructions
+├── AGENTS.md              # Global instructions
+├── frontend/
+│   ├── AGENTS.md          # Frontend-specific instructions
+│   └── components/
+│        └── AGENTS.md     # Component-specific instructions
+└── backend/
+    └── AGENTS.md          # Backend-specific instructions
 ```
 
 User Rules: User Rules are global preferences defined in Customize → Rules that apply across all projects. They are used by Agent (Chat) and are perfect for setting preferred communication style or coding conventions:
@@ -155,11 +155,11 @@ For compatibility, Cursor also loads skills from Claude and Codex directories: `
 
 Each skill should be a folder containing a SKILL.md file:
 
-```text
+```filesystem
 project/
-  .agents/skills/
-    my-skill/
-      SKILL.md           # Skill definition
+└── .agents/skills/
+    └── my-skill/
+         └── SKILL.md           # Skill definition
 ```
 
 Skills can also include optional directories for scripts, references, and assets: more at https://cursor.com/docs/skills#skill-directories
